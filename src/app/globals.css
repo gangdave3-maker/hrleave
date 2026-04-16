@@ -1,26 +1,141 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.lay {
+  /* 🔥 mobile-safe viewport height */
+  min-height: 100svh;   /* small viewport (iOS safe) */
+  min-height: 100dvh;   /* dynamic viewport (modern browsers) */
+  /* background-image:url('https://jhcposnstqhynbmubhyn.supabase.co/storage/v1/object/public/music-25March69/bg_space_1280.png'); */
+  background-color: #dce3ed;
+  background-size:cover !important;
+  background-position:left;
+  background-repeat: no-repeat;
+  background-attachment:fixed !important; /*ตรงนี้สำคัญมากต้องใส่ !important เพื่อแก้ภาพ Background บนมือถือให้เต็มจอ*/
+  max-height: 100vh;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (max-width: 400px) {
+  .lay {
+    background-attachment: scroll;
+    background-size: cover; /* หรือ 100% 100% ตามความเหมาะสม */
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Base styles for the welcome class (no background) */
+.welcome {
+  min-height: 100vh;
+  background-image: url("/RealHomePage.png");
+  background-size:contain !important;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Only apply the background if BOTH conditions are met */
+/* @media (min-width: 730px) and (min-height: 450px) {
+  .welcome {
+    
+  }
+} */
+
+.videoBg {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.left-align-swal {
+  text-align: left !important;
+}
+
+.slick-prev:before, .slick-next:before {
+  display: none !important;
+}
+
+/* The container for the dots */
+.slick-dots li button:before {
+  color: white !important; /* Change this to your desired color (e.g., amber-400) */
+  opacity: 1;
+}
+
+/* The active dot */
+.slick-dots li.slick-active button:before {
+  color: blue !important; /* Change this for the active dot (e.g., red-500) */
+  opacity: 1;
+}
+
+.product-con{
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill,minmax(240px,1fr)) !important;
+    grid-gap: 1rem !important;
+}
+
+.product-item{
+    box-shadow: 0 0 12px rgba(255,255,255,0.5) !important;
+    outline: 2px solid white;
+    transition: 0.3s;
+}
+
+.product-item:hover {
+    outline: 2px solid yellow;
+}
+
+.popup_overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  position: relative;
+  background: linear-gradient(180deg, #FBFFBB, #FF8C00);
+  padding: 1.5rem 1rem; /* Slightly more top/bottom padding */
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+  
+  width: min(92vw, 580px);
+  max-height: 85vh; /* Reduced slightly to ensure it doesn't touch screen edges */
+  
+  text-align: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Smooth scrolling for mobile */
+  -webkit-overflow-scrolling: touch; 
+}
+
+.close_btn{
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  border: none;
+  background: none;
+  font-size: 28px;
+  font-weight: bolder;
+  cursor: pointer;
+  color: red;
+  z-index: 2000;
+}
+
+.FormTable{
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill,minmax(400px,1fr)) !important;
+    grid-gap: 1rem !important;
 }

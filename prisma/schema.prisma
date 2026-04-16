@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model employees {
+  employee_id       Int              @id(map: "pk_employees") @db.SmallInt
+  last_name         String           @db.VarChar(20)
+  first_name        String           @db.VarChar(10)
+  title             String?          @db.VarChar(30)
+  title_of_courtesy String?          @db.VarChar(25)
+  birth_date        DateTime?        @db.Date
+  hire_date         DateTime?        @db.Date
+  address           String?          @db.VarChar(60)
+  city              String?          @db.VarChar(15)
+  region            String?          @db.VarChar(15)
+  postal_code       String?          @db.VarChar(10)
+  country           String?          @db.VarChar(15)
+  home_phone        String?          @db.VarChar(24)
+  extension         String?          @db.VarChar(4)
+  notes             String?
+  reports_to        Int?             @db.SmallInt
+  password          String?
+  email             String           @unique(map: "employees_email_unique") @default("a@hotmail.com") @db.VarChar(100)
+  employees         employees?       @relation("employeesToemployees", fields: [reports_to], references: [employee_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_employees_employees")
+  other_employees   employees[]      @relation("employeesToemployees")
+  leave_requests    leave_requests[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model leave_requests {
+  request_id    Int          @id @default(autoincrement())
+  employee_id   Int?         @db.SmallInt
+  leave_type_id Int?
+  start_date    DateTime     @db.Date
+  end_date      DateTime     @db.Date
+  reason        String?
+  status        String?      @default("Pending") @db.VarChar(20)
+  created_at    DateTime?    @default(now()) @db.Timestamp(6)
+  employees     employees?   @relation(fields: [employee_id], references: [employee_id], onDelete: NoAction, onUpdate: NoAction)
+  leave_types   leave_types? @relation(fields: [leave_type_id], references: [leave_type_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model leave_types {
+  leave_type_id     Int              @id @default(autoincrement())
+  type_name         String           @db.VarChar(50)
+  max_days_per_year Int?             @default(15)
+  leave_requests    leave_requests[]
+}
