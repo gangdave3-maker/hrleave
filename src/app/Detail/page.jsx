@@ -69,9 +69,7 @@ function Detail({params}) {
           </div>
         ))}
         <div className='text-center mt-3'>
-          <button className='btn btn-primary'>
-            <Link href={'/Hall'} className='text-white no-underline!'>Back</Link>
-          </button>
+            <Link href={'/Hall'} className='btn btn-primary text-white no-underline!'>Back</Link>
         </div>
       </div>
 
