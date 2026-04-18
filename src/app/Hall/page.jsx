@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { reportTo, leaveBegin, easyDate, requestLeave, clientRefresh } from '../Components/My-function'
 import Link from 'next/link'
 import path from "path"
+import Swal from 'sweetalert2'
 
 function Hall() {
   const [mounted, setMounted] = useState(false)
@@ -29,6 +30,57 @@ function Hall() {
     created_at:'12/31/1999',
   }
   const [empLeave,setEmpLeave] = useState(leaveData)
+
+  const initiateLeaveTypeID=(valueFromSelect)=>{
+    switch(valueFromSelect){
+                            case "1" :
+                              if(parseInt(remain.Sick)<1){
+                                Swal.fire({
+                                            title: "Warning",
+                                            html: `Your leave balance exceeded limit.`,
+                                            icon: "error",
+                                            customClass: {htmlContainer: 'left-align-swal'}
+                                          }).then(()=>{clientRefresh()});
+                              }
+                              setEmpLeave(prev=>({
+                                ...prev,
+                                leave_type_id:parseInt(valueFromSelect)
+                              }))
+                            break;
+
+                            case "2" :
+                              if(parseInt(remain.Private)<1){
+                                Swal.fire({
+                                            title: "Warning",
+                                            html: `Your leave balance exceeded limit.`,
+                                            icon: "error",
+                                            customClass: {htmlContainer: 'left-align-swal'}
+                                          }).then(()=>{clientRefresh()});
+                              }
+                              setEmpLeave(prev=>({
+                                ...prev,
+                                leave_type_id:parseInt(valueFromSelect)
+                              }))
+                            break;
+
+                            case "3" :
+                              if(parseInt(remain.Summer)<1){
+                                Swal.fire({
+                                            title: "Warning",
+                                            html: `Your leave balance exceeded limit.`,
+                                            icon: "error",
+                                            customClass: {htmlContainer: 'left-align-swal'}
+                                          }).then(()=>{clientRefresh()});
+                              }
+                              setEmpLeave(prev=>({
+                                ...prev,
+                                leave_type_id:parseInt(valueFromSelect)
+                              }))
+                            break;
+
+                            default:break;
+                          }
+  }
 
   useEffect(() => {
     const grabEmployee=()=>{
@@ -288,12 +340,7 @@ function Hall() {
                                 name="Leave Type" 
                                 id="Leave Dropdown" 
                                 className='p-2 bg-white rounded-md focus:outline-none'
-                                onChange={(e)=>{
-                                  setEmpLeave(prev=>({
-                                    ...prev,
-                                    leave_type_id:parseInt(e.target.value)
-                                  }))
-                                }}
+                                onChange={(e)=>{initiateLeaveTypeID(e.target.value)}}
                               >
                                 <option value="">-- Leave Types --</option>
                                 <option value="1">Sick</option>

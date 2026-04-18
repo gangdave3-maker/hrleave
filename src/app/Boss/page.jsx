@@ -240,7 +240,7 @@ function Boss() {
                           >
                             Pending
                           </button>
-                          <button className="btn btn-sm btn-danger">Delete</button>
+                          <button className="btn btn-sm btn-danger" onClick={()=>deleteLeave(item.request_id)}>Delete</button>
                         </div>
                       </div>
                     </div>
