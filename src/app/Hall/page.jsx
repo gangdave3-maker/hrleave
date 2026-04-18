@@ -306,7 +306,7 @@ function Hall() {
                               <span className="fw-bold mr-2!">Start Date:</span>
                               <input 
                                 type="text" 
-                                className='form-control w-fit!' placeholder='mm/dd/yyyy'
+                                className='form-control w-7/10! lg:w-fit!' placeholder='mm/dd/yyyy'
                                 value={empLeave.start_date}
                                 onChange={(e)=>{
                                   setEmpLeave(prev=>({
