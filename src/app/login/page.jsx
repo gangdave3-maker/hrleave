@@ -38,18 +38,24 @@ export default function Page() {
   }
 
   useEffect(() => {
+    
     const fetchUser = async () => {
       const users = await getCred()
       if (Array.isArray(users)){
         setAllCred(users)
       }
       Swal.fire({
-                  title:"Info",
-                  text:`User for test \n Nancy-Davolio (Boss) \n Robert-King (Staff) \n Laura-Misaki \n All users have the same password = Congratulations@1`,
-                  icon:'info',
-                  customClass: {htmlContainer: 'left-align-swal'},
-                })
+                  title: "Info",
+                  html: ` User for test:<br>
+                          Nancy-Davolio (Boss)<br>
+                          Robert-King (Staff)<br>
+                          Laura-Misaki (Staff)<br><br>
+                          <strong>All users have the same password:</strong> Congratulations@1`,
+                  icon: 'info',
+                  customClass: {htmlContainer: 'left-align-swal'}
+                });
     }
+
     fetchUser()
   }, [])
 //ความสามารถของ .find สามารถสร้างเงื่อนไขในการค้นหาให้มีค่าตรงกันกับที่เรา fill in เข้ามาจาก input box ก็ได้
