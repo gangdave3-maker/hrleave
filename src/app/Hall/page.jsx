@@ -76,7 +76,8 @@ function Hall() {
     grabPictName()
   },[employee])
 
-  //const BUCKET_URL = "https://jhcposnstqhynbmubhyn.supabase.co/storage/v1/object/public/music-25March69";
+  const BUCKET_URL = "https://nxsomhontjaubdsnnvmp.supabase.co/storage/v1/object/public/images";
+  
 /*************************************************************************************************************** */
   useEffect(()=>{
     if(leaveBeginInit.length>0){
@@ -161,7 +162,7 @@ function Hall() {
         <div className='flex flex-col md:flex-row justify-center items-center mb-3'>
           {
             pictName && <Image 
-                          src={`/employees/${pictName}`} 
+                          src={`${BUCKET_URL}/employees/${pictName}`} 
                           alt='Employee Name' 
                           width={150} height={225}
                           className='object-contain!'

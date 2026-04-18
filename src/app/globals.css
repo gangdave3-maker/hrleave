@@ -30,7 +30,7 @@
 /* Base styles for the welcome class (no background) */
 .welcome {
   min-height: 100vh;
-  background-image: url("/RealHomePage.png");
+  background-image: url("https://nxsomhontjaubdsnnvmp.supabase.co/storage/v1/object/public/images/RealHomePage.png");
   background-size:contain !important;
   background-position: center;
   background-repeat: no-repeat;
