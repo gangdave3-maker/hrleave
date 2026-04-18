@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { getCred, easyDate } from '../Components/My-function'
 import Cookies from 'js-cookie'
 import { Eye,EyeClosed } from 'lucide-react'
+import Swal from 'sweetalert2'
 
 export default function Page() {
   var data = {
@@ -42,6 +43,12 @@ export default function Page() {
       if (Array.isArray(users)){
         setAllCred(users)
       }
+      Swal.fire({
+                  title:"Info",
+                  text:`User for test \n Nancy-Davolio (Boss) \n Robert-King (Staff) \n Laura-Misaki \n All users have the same password = Congratulations@1`,
+                  icon:'info',
+                  customClass: {htmlContainer: 'left-align-swal'},
+                })
     }
     fetchUser()
   }, [])
