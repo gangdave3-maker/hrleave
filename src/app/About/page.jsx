@@ -11,7 +11,7 @@ function Contact() {
           <div className='container'>
             <div className='min-h-screen'>
               <h1 className='text-center underline pb-3!'>About Us</h1>
-              <p className='text-2xl'>
+              <p className='md:text-2xl'>
                 {`\u2001`}{`\u2001`}{`\u2001`}My name is Pichaiyut Sirianantawong. I am a developer using Javascript, HTML, 
                 CSS, REACT, Next.JS and REACT Native. I used to be .Net programmer before. However, I found out that Javascript
                 and its library and framework are more interesting than dot Net. That&apos;s why I switch to learn the subjects.
