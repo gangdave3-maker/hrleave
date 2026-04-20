@@ -140,29 +140,76 @@ export async function leaveBegin(empID){
   }
 }
 
-export async function requestLeave(leaveData) {
-    const res = await fetch('/api/insert-leave',{
-      method:'POST',
-      headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(leaveData),
-    })
+export async function requestLeave(leaveData,remaining) {
+  var res = null
+  
+  const start = new Date(leaveData.start_date) 
+  const end = new Date(leaveData.end_date)
+  // คำนวณส่วนต่าง (มิลลิวินาที) -> แปลงเป็นวัน
+  // +1 เพราะการลา 23 ถึง 24 คือการลา 2 วัน
+  const diffInMs = Math.abs(end - start);
+  const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24)) + 1;
+  
+  switch(leaveData.type_name){
+    case "Sick":
+      if(remaining.Sick-diffInDays>=0){
+              res = await fetch('/api/insert-leave',{
+                      method:'POST',
+                      headers:{
+                                'Content-Type': 'application/json',
+                              },
+                      body: JSON.stringify(leaveData),
+                    })
+      }
+    break;
 
-  // 1. Parse the JSON body FIRST to get the data inside
-  const data = await res.json();
+    case "Private":
+      if(remaining.Private-diffInDays>=0){
+              res = await fetch('/api/insert-leave',{
+                      method:'POST',
+                      headers:{
+                                'Content-Type': 'application/json',
+                              },
+                      body: JSON.stringify(leaveData),
+                    })
+      }
+    break;
 
-  if (!res.ok) throw new Error(data.message||'Failed to fetch')
-  if(data){
+    case "Summer":
+      if(remaining.Summer-diffInDays>=0){
+              res = await fetch('/api/insert-leave',{
+                      method:'POST',
+                      headers:{
+                                'Content-Type': 'application/json',
+                              },
+                      body: JSON.stringify(leaveData),
+                    })
+      }
+    break;
 
-    await Swal.fire({
-                title:"Info",
-                text:"Submit request successfully.",
-                icon:"success"
-             })
-    clientRefresh()
+    default: break;
   }
-  return data
+  // 1. Parse the JSON body FIRST to get the data inside
+  if(res){
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.message||'Failed to fetch')
+    if(data){
+              await Swal.fire({
+                                title:"Info",
+                                text:"Submit request successfully.",
+                                icon:"success"
+                              })
+      clientRefresh()
+      return data
+    }
+  }else{
+        Swal.fire({
+                    title:"Warning",
+                    text:"Request Error. Please check the long of your leave or contact system admin.",
+                    icon:"error"
+                  }).then(()=>{return {}})
+  }
 }
 
 export async function servitor(empID){

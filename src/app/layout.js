@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css"
-import Image from "next/image";
+//import Image from "next/image";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -13,20 +13,20 @@ const inter = Inter({
 
 export const metadata = {
   // 🔁 replace with real domain
-  metadataBase: new URL("https://musicstation.vercel.app/"),
+  metadataBase: new URL("https://daveleave.vercel.app/"),
 
   title: {
     default:
-      "Online Music Player - Graduation Project | Online Music Player by Pichaiyut Sirianantawong",
-    template: "%s | Music Station", // Automatically turns "Batman" into "Batman | MovieRent"
+      "HR Leaving System - Graduation Project | Online HR Leaving System by Pichaiyut Sirianantawong",
+    template: "%s | Leaving System", // Automatically turns "Batman" into "Batman | MovieRent"
   },
 
   description:
-    "Music Station is a Graduation Project developed by Pichaiyut Sirianantawong. A full-stack online music player web application built with Next.js featuring authentication, registration system, and responsive design.",
+    "HR Leaving System is a Graduation Project developed by Pichaiyut Sirianantawong. A full-stack online leaving system web application built with Next.js featuring authentication, registration system, and responsive design.",
 
   keywords: [
     "Graduation Project",
-    "Music Station",
+    "HR Leaving System",
     "Next.js Project",
     "Web Application",
     "Full Stack Developer",
@@ -45,20 +45,20 @@ export const metadata = {
 // In Next.js App Router, you usually define it inside the metadata object.
   openGraph: {
     title:
-      "Music Player - Online Music Station | Graduation Project",
+      "Leaving System - Online HR Leaving System | Graduation Project",
     description:
-      "A full-stack music player web application built with Next.js as a graduation project.",
-    url: "https://musicstation.vercel.app/",
-    siteName: "Music Station",
+      "A full-stack leaving system web application built with Next.js as a graduation project.",
+    url: "https://daveleave.vercel.app/",
+    siteName: "HR Leaving System",
     locale: "en_US",
     type: "website",
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Music Station - Graduation Project",
+    title: "HR Leaving System - Graduation Project",
     description:
-      "Full-stack music player built with Next.js.",
+      "Full-stack leaving system built with Next.js.",
   },
 };
 

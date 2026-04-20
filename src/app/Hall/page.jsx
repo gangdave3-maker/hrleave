@@ -23,12 +23,20 @@ function Hall() {
   const leaveData={
     employee_id:0,
     leave_type_id:0,
+    type_name:"",
     start_date:'12/31/1999',
     end_date:'12/31/1999',
     reason:'',
     status:'pending',
     created_at:'12/31/1999',
   }
+
+  const [usedDate,setusedDate] = useState({
+                                            Sick:0,
+                                            Private:0,
+                                            Summer:0,
+                                          })
+
   const [empLeave,setEmpLeave] = useState(leaveData)
 
   const initiateLeaveTypeID=(valueFromSelect)=>{
@@ -44,7 +52,8 @@ function Hall() {
                               }
                               setEmpLeave(prev=>({
                                 ...prev,
-                                leave_type_id:parseInt(valueFromSelect)
+                                leave_type_id:parseInt(valueFromSelect),
+                                type_name:"Sick"
                               }))
                             break;
 
@@ -59,7 +68,8 @@ function Hall() {
                               }
                               setEmpLeave(prev=>({
                                 ...prev,
-                                leave_type_id:parseInt(valueFromSelect)
+                                leave_type_id:parseInt(valueFromSelect),
+                                type_name:"Private"
                               }))
                             break;
 
@@ -74,7 +84,8 @@ function Hall() {
                               }
                               setEmpLeave(prev=>({
                                 ...prev,
-                                leave_type_id:parseInt(valueFromSelect)
+                                leave_type_id:parseInt(valueFromSelect),
+                                type_name:"Summer"
                               }))
                             break;
 
@@ -130,31 +141,55 @@ function Hall() {
 
   const BUCKET_URL = "https://nxsomhontjaubdsnnvmp.supabase.co/storage/v1/object/public/images";
   
-/*************************************************************************************************************** */
+/************** Section ที่สำคัญที่สุดในการคำนวนวัน ต้องมาศึกษาทบทวนซ้ำอีกครั้ง เพื่อทำความเข้าใจ************************* */
   useEffect(()=>{
+    const maxLeave={
+                    sick:30,
+                    private:3,
+                    summer:6,
+                   }
     if(leaveBeginInit.length>0){
-        const maxLeave={
-                        sick:30,
-                        private:3,
-                        summer:6,
-                       }
+                      
         const summary = leaveBeginInit.reduce((acc, curr) => { //acc คือ object แน่นอนว่าข้อมูลแต่ละชุดจะมีค่า key: value
+
           // ตรวจสอบให้แน่ใจว่าค่าที่ได้คือ 'Sick', 'Private', หรือ 'Summer'
           const typeName = curr.leave_types?.type_name; 
+
           if (typeName) {
-            acc[typeName] = (acc[typeName] || 0) + 1;
+            //acc[typeName] = (acc[typeName] || 0) + 1;
+            // ถ้ายังไม่มี Key นี้ ให้สร้างโครงสร้างมารองรับ (ข้อมูลเดิมจะไม่หาย)
+            if (!acc[typeName]) {
+              acc[typeName] = {
+                logs: [], // เก็บ object curr ทั้งหมดเอาไว้
+                totalDays: 0 // เก็บผลรวมวันลาที่คำนวณได้
+              };
+            }
+
+            // --- ส่วนการคำนวณวันลาจาก end_date และ start_date ---
+            const start = new Date(curr.start_date);
+            const end = new Date(curr.end_date);
+
+            // คำนวณส่วนต่าง (มิลลิวินาที) -> แปลงเป็นวัน
+            // +1 เพราะการลา 23 ถึง 24 คือการลา 2 วัน
+            const diffInMs = Math.abs(end - start);
+            const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24)) + 1;
+
+            // เก็บข้อมูลดิบลง logs และบวกจำนวนวันเข้าไปใน totalDays
+            acc[typeName].logs.push(curr);
+            acc[typeName].totalDays += diffInDays;
           }
   
           return acc;
         }, {});
-
+        //console.log(summary)
         const grabAvailable=()=>{
+          //console.log(summary)
           // 2. คำนวณค่าที่เหลือแบบ Dynamic
           // ใช้ค่าจาก maxLeave เป็นตัวตั้ง แล้วลบด้วยค่าที่มีใน summary (ถ้าไม่มีให้เป็น 0)
           setRemain({
-            Sick: maxLeave.sick - (summary.Sick || 0),
-            Private: maxLeave.private - (summary.Private || 0),
-            Summer: maxLeave.summer - (summary.Summer || 0),
+            Sick: maxLeave.sick - (summary.Sick?.totalDays || 0),
+            Private: maxLeave.private - (summary.Private?.totalDays || 0),
+            Summer: maxLeave.summer - (summary.Summer?.totalDays || 0),
           });
         }
 
@@ -189,10 +224,10 @@ function Hall() {
 /*************************************************************************************************************** */
   const handleSubmit = (e) => {
     e.preventDefault(); // สำคัญมาก: กันไม่ให้หน้าเว็บ Refresh
-    requestLeave(empLeave); // ส่ง State ปัจจุบันไปทำงาน
+    requestLeave(empLeave,remain); // ส่ง State ปัจจุบันไปทำงาน
   };
 
-  //useEffect(()=>{console.log(leaveBeginInit)},[leaveBeginInit])
+  //useEffect(()=>{console.log(usedDate)},[usedDate])
 
   if (!mounted) return null // ⬅️ hydration-safe
 /*ปัญหาเรื่องการแสดงผล table การสร้างตารางเทียมให้เกิด responsive มีสองวิธี คือใช้ col, row ของ bootstrap ซึ่งจะเหมาะกับการแสดงผลข้อมูลที่ไม่เยอะ และมีไม่กี่คอลัมน์ แต่จะมีปัญหากับการแสดงผลข้อมูลที่เยอะหรือยาว หรือมีหลายๆคอลัมน์
